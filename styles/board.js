@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
 
+
+//  게시글 상세 전체
 export const Wrapper = styled.div`
   width: 1200px;
   background-color: #FFFFFF;
@@ -20,8 +22,8 @@ export const PostWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 80px 102px;
+  box-sizing: border-box;
 ` 
-
 export const PostHeader = styled.div`
   width: 996px;
   height: 160px;
@@ -32,8 +34,10 @@ export const PostHeader = styled.div`
   border-bottom: 1px solid #bdbdbd;
   padding-top: 80px;
   padding-bottom: 20px;
+  box-sizing: border-box;
 `
 
+// 작성 정보
 export const HeaderLeft = styled.div`
   width: 190px;
   display: flex;
@@ -41,29 +45,36 @@ export const HeaderLeft = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-
 export const PostInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 `
-
 export const PostUserIcon = styled.div`
   width: 46px;
   height: 46px;
   color: #bdbdbd;
 `
-
 export const PostUser = styled.div`
   font-size: 24px;
 `
-
 export const PostDate = styled.div`
-  font-size: 18px;
   color: #828282;
+  line-height: 18px;
 `
 
+// 주소
+export const HeaderRigt = styled.div`
+  width: 376px;
+  height: 103.34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 37px;
+  box-sizing: border-box;
+`
 export const HeaderIcon = styled.div`
   width: 80px;
   display: flex;
@@ -72,10 +83,38 @@ export const HeaderIcon = styled.div`
   align-items: center;
 `
 
+// 주소 말풍선
+export const LocaDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-right: 16px;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+`
+export const Address = styled.div`
+  width: 376px;
+  height: 64px; 
+  color: #fff;
+  background-color: #c4c4c4;
+  text-align: right;
+  padding: 10px 16px;
+  box-sizing: border-box;
+`
+export const Triangle = styled.div`
+  width: 0px;
+  height: 0px;
+  border-bottom: 8px solid #c4c4c4;
+  border-left: 0px solid transparent;
+  border-right: 12px solid transparent;
+  transform: rotate(180deg);
+  box-sizing: border-box;
+`
+
 export const LinkIcon = styled.div`
   color: #ffd600;
 `
-
 export const LocaIcon = styled.div`
   color: #ffd600;
 `
@@ -102,17 +141,15 @@ export const PostPictuer = styled.img`
   height: 480px;
   margin-bottom: 40px;
 `
-
 export const PostText = styled.div`
   width: 996px;
   height: 96px;
   margin-bottom: 120px;
 `
-
-export const PostVideo = styled.video`
+export const PostVideo = styled.iframe`
   width: 486px;
   height: 240px;
-  /* filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.2)); */
+  margin: 0 auto 163px;
 `
 
 export const LDbtns = styled.div`
@@ -122,22 +159,36 @@ export const LDbtns = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 auto 60px;
+  box-sizing: border-box;
 `
-
 export const Likebtn = styled.div`
+  width: 40px;
+  height: 51px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #FFD600;
 `
 
+export const LikeNum = styled.div`
+  color: #FFD600;
+  font-size: 18px;
+  padding-top: 5px;
+`
 export const Dislikebtn = styled.div`
+  width: 40px;
+  height: 51px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  
+  color: #828282;
+`
+export const DisLikeNum = styled.div`
+  color: #828282;
+  font-size: 18px;
 `
 
 export const BtnGroup = styled.div`
@@ -149,7 +200,6 @@ export const BtnGroup = styled.div`
   padding: 101px 307px 87px 307px;
   border-bottom: 1px solid #bdbdbd;
 `
-
 export const Btn = styled.button`
   width: 179px;
   height: 45px;

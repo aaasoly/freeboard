@@ -26,17 +26,21 @@ import {
 } from '../../../styles/new'
 import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
-import { Router } from 'next/router'
+import { useRouter } from 'next/router'
 
-export const CREATE_BOARD = gql`
+const CREATE_BOARD = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
     createBoard(createBoardInput: $createBoardInput) {
       _id
+      writer
+      title
+      contents
     }
   }
 `
 
 export default function WritePost() {
+  const router = useRouter()
 
   const [ name, setName ] = useState("")
   const [ nameError, setNameError ] = useState("")
@@ -47,8 +51,8 @@ export default function WritePost() {
   const [ titleError, setTitleError ] = useState("")
   const [ contents, setContents ] = useState("")
   const [ contentsError, setContentsError ] = useState("")
-  const [ adress, setAdress ] = useState("")
-  const [ adressError, setAdressError ] = useState("")
+  const [ address, setAddress ] = useState("")
+  const [ addressError, setAddressError ] = useState("")
 
   const [createBoard] = useMutation(CREATE_BOARD);
 
@@ -64,11 +68,23 @@ export default function WritePost() {
   function onChangeContents(event) {
     setContents(event.target.value)
   }
-  function onChangeAdress(event) {
-    setAdress(event.target.value)
+  function onChangeAddress(event) {
+    setAddress(event.target.value)
   }
 
   const onClickSubmit = async () => {
+
+    try {
+      const result = await createBoard({
+        variables: {
+          createBoardInput: {
+            writer: name,
+            password: password,
+            title: title,
+            contents: contents
+          }
+        }
+      })
     if( name === "") {
       setNameError("이름을 적어주세요")
     } else {
@@ -89,30 +105,18 @@ export default function WritePost() {
     } else {
       setContentsError("")
     }
-    if( adress === "") {
-      setAdressError("주소를 적어주세요")
+    if( address === "") {
+      setAddressError("주소를 적어주세요")
     } else {
-      setAdressError("")
+      setAddressError("")
     }
     if(name !== "" && password !== "" && title !== "" && contents !== "") {
-      try {
-        const result = await createBoard({
-          variables: {
-            createBoardInput: {
-              writer: writer,
-              password: password,
-              title: title,
-              contents: contents
-            }
-          }
-        })
-        console.log(result)
-        alert("게시물 등록에 성공하였습니다!")
-        Router.push(`boards/${result.data.createBoard._id}`)
+      alert("게시물 등록에 성공하였습니다!")
+    }
+      router.push(`/boards/${result.data.createBoard._id}`)
       } catch(error) {
         console.log(error.message)
       }
-  }
 }
 
 
@@ -152,9 +156,9 @@ export default function WritePost() {
           <PostBlank type="text" placeholder='07250' />
           <PostSearch>우편번호 검색</PostSearch>
         </Post>
-            <AddressBlank type="text" onChange={onChangeAdress} />
-            <AddressBlank type="text" onChange={onChangeAdress} />
-        <Error>{adressError}</Error>
+            <AddressBlank type="text" onChange={onChangeAddress} />
+            <AddressBlank type="text" onChange={onChangeAddress} />
+        <Error>{addressError}</Error>
       </Address>
 
       <Youtube>

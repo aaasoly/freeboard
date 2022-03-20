@@ -1,14 +1,14 @@
-import { PostUserIcon, PostInfo,Btn, BtnGroup, CommentBox, CommentChange, CommentDate, CommentContents, CommentDelete, UserName, CommentDetail, CommentHeader, CommentSetting, CommentWrapper, CommentInput, UserInput, UserInfo, CreateComment, Dislikebtn, LDbtns, Likebtn, PostBody, HeaderLeft, PostHeader, PostVideo, PostPictuer, PostText, PostTitle, PostDate, PostWrapper, CommentUserIcon, Wrapper, PostUser, HeaderIcon, LinkIcon, LocaIcon } from '../../../styles/board'
-import { useQuery, gql } from "@apollo/client"
-import { Router, useRouter } from "next/router"
+import { PostUserIcon, PostInfo,Btn, BtnGroup, CommentBox, CommentChange, CommentDate, CommentContents, CommentDelete, UserName, CommentDetail, CommentHeader, CommentSetting, CommentWrapper, CommentInput, UserInput, UserInfo, CreateComment, Dislikebtn, LDbtns, Likebtn, PostBody, HeaderLeft, PostHeader, PostVideo, PostPictuer, PostText, PostTitle, PostDate, PostWrapper, CommentUserIcon, Wrapper, PostUser, Address, HeaderIcon, LinkIcon, LocaIcon, LikeNum, DisLikeNum, HeaderRigt, Triangle, LocaDetail } from '../../../styles/board'
+import { useQuery, gql } from '@apollo/client'
+import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleUser, faLink, faLocationDot, faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
-// import { faLocationDot } from '@fortawesome/free-regular-svg-icons'
+import { faCircleUser, faLink, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons'
 
 const FETCH_BOARD = gql`
-  query fetchBoard($number: Int){
-    fetchBoard(number:$number){
-      number
+  query fetchBoard($boardId: ID!){
+    fetchBoard(boardId: $boardId){
+      _id
       writer
       title
       contents
@@ -18,11 +18,10 @@ const FETCH_BOARD = gql`
 `
 
 export default function BoardDetail() {
-
   const router = useRouter()
 
   const { data } = useQuery(FETCH_BOARD, {
-    variables: { number: Number(router.query.number)}
+    variables: { boardId: router.query.boardId }
   })
 
   return (
@@ -34,24 +33,39 @@ export default function BoardDetail() {
             <PostUserIcon><FontAwesomeIcon icon={faCircleUser} size="3x"/></PostUserIcon>
             <PostInfo>
               <PostUser>{data ? data.fetchBoard.writer : "loading..."}</PostUser>
-              <PostDate>Date : {data? data.fetchBoard.createdAt : "loading..."}</PostDate>
+              <PostDate>Date : 2022. 03. 22</PostDate>
             </PostInfo>
           </HeaderLeft>
-          <HeaderIcon>
-            <LinkIcon><FontAwesomeIcon icon={faLink} size="2x"/></LinkIcon>
-            <LocaIcon><FontAwesomeIcon icon={faLocationDot} size="2x"/></LocaIcon>
-          </HeaderIcon>
+          <HeaderRigt>
+            <LocaDetail>
+              <Address>
+                서울특별시 영등포구 양산로 200 <br/>
+                (영등포동5가, 영등포시장역) 영등포 타임스퀘어 2층
+              </Address>
+              <Triangle></Triangle>
+            </LocaDetail>
+            <HeaderIcon>
+              <LinkIcon><FontAwesomeIcon icon={faLink} size="2x"/></LinkIcon>
+              <LocaIcon><FontAwesomeIcon icon={faLocationDot} size="2x"/></LocaIcon>
+            </HeaderIcon>
+          </HeaderRigt>
         </PostHeader>
 
         <PostBody>
-          <PostTitle>{data? data.fetchBoard.title : "loading"}</PostTitle>
+          <PostTitle>{data ? data.fetchBoard.title : "loading"}</PostTitle>
           <PostPictuer src="/image.png"></PostPictuer>
           <PostText>{data? data.fetchBoard.contents : "loading"}</PostText>
           <PostVideo></PostVideo>
 
           <LDbtns>
-            <Likebtn><FontAwesomeIcon icon={faThumbsUp} /></Likebtn>
-            <Dislikebtn><FontAwesomeIcon icon={faThumbsDown} /></Dislikebtn>
+            <Likebtn>
+              <FontAwesomeIcon icon={faThumbsUp} size="2x" />
+              <LikeNum>1920</LikeNum>
+            </Likebtn>
+            <Dislikebtn>
+              <FontAwesomeIcon icon={faThumbsDown} size="2x"/>
+              <DisLikeNum>1920</DisLikeNum>
+            </Dislikebtn>
           </LDbtns>
         </PostBody>
       </PostWrapper>
