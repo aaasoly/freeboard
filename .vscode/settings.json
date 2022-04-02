@@ -1,0 +1,4 @@
+{
+  "editor.formatOnSave": true, // 저장 할 때마다 포맷 정렬
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
