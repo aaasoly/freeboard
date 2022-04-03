@@ -1,9 +1,9 @@
 import * as S from "./BoardComment.styles";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { IBoardCommentWriteUIProps } from "./BoardComment.types";
+//import { IBoardCommentWriteUIProps } from "./BoardComment.types";
 
-export default function BoardCommentWriteUI(props: IBoardCommentWriteUIProps) {
+export default function BoardCommentWriteUI(props) {
   return (
     <S.CommentWrapper>
       <S.CommentHeader>
@@ -35,8 +35,12 @@ export default function BoardCommentWriteUI(props: IBoardCommentWriteUIProps) {
           ></S.CommentContent>
           <S.CommentInputBottom>
             <S.CommentCharNum>{props.contents.length}/100</S.CommentCharNum>
-            <S.CommentCreateButton onClick={props.onClickCreateComment}>
-              등록하기
+            <S.CommentCreateButton
+              onClick={
+                props.isEdit ? props.onClickUpdate : props.onClickCreateComment
+              }
+            >
+              {props.isEdit ? "수정하기" : "등록하기"}
             </S.CommentCreateButton>
           </S.CommentInputBottom>
         </S.CommentWriteBox>

@@ -5,65 +5,113 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
-import InfiniteScroll from "react-infinite-scroller";
+import BoardCommentWrite from "../write/BoardComment.container";
+import { useState } from "react";
+import { DELETE_BOARD_COMMENT } from "./CommentList.queries";
+import { useRouter } from "next/router";
+import { useMutation } from "@apollo/client";
 
-export default function BoardCommentListUIItem(
-  props: IBoardCommentListUIProps
-) {
+export default function BoardCommentListUIItem(props) {
+  const router = useRouter();
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [deleteId, setDeleteId] = useState("");
+  const [commentpassword, setCommentpassword] = useState("");
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [deleteBoardComment] = useMutation(DELETE_BOARD_COMMENT);
+
+  const onClickDeleteComment = async () => {
+    try {
+      await deleteBoardComment({
+        variables: {
+          password: commentpassword,
+          boardCommentId: deleteId,
+        },
+        refetchQueries: [
+          {
+            query: FETCH_BOARD_COMMENTS,
+            variables: { boardId: router.query.boardId },
+          },
+        ],
+      });
+      setIsOpenDeleteModal(false);
+      setDeleteId("");
+      Modal.success({
+        content: "댓글이 삭제되었습니다!",
+      });
+    } catch (error) {
+      Modal.error({ content: error.message });
+    }
+  };
+
+  function onClickOpenDeleteModal(event: MouseEvent<HTMLDivElement>) {
+    setIsOpenDeleteModal(true);
+    if (event.target instanceof Element) setDeleteId(event.currentTarget.id);
+  }
+
+  function onClickCloseDeleteModal(event: MouseEvent<HTMLDivElement>) {
+    setIsOpenDeleteModal(false);
+  }
+
+  function onChangeDeletePassword(event: ChangeEvent<HTMLInputElement>) {
+    setCommentpassword(event.target.value);
+  }
+
+  const onClickMoveToUpdate = () => {
+    setIsEdit(true);
+    console.log("true");
+  };
+
   return (
     <div>
-      {props.isOpenDeleteModal && (
+      {isOpenDeleteModal && (
         <Modal
-          visible={props.isOpenDeleteModal}
-          onOk={props.onClickDeleteComment}
-          onCancel={props.onClickCloseDeleteModal}
+          visible={isOpenDeleteModal}
+          onOk={onClickDeleteComment}
+          onCancel={onClickCloseDeleteModal}
         >
           <div>비밀번호 입력: </div>
-          <S.PasswordInput
-            type="password"
-            onChange={props.onChangeDeletePassword}
-          />
+          <S.PasswordInput type="password" onChange={onChangeDeletePassword} />
         </Modal>
       )}
-      <InfiniteScroll pageStart={0} loadMore={props.onLoadMore} hasMore={true}>
-        {/* {props.data?.fetchBoardComments.map((el) => ( */}
-        {props.isEdit === false && (
-          <S.CommentBox
-            key={props.el._id}
-            id={String(props.el.writer)}
-            onClick={props.onClickWriter}
-          >
-            <S.CommentUserIcon>
-              <FontAwesomeIcon icon={faCircleUser} size="2x" />
-            </S.CommentUserIcon>
 
-            <S.CommentUnit>
-              <S.CommentUnitHeader>
-                <S.UserName>{props.el.writer}</S.UserName>
-                <S.UserStar value={props.el?.rating} disabled></S.UserStar>
-              </S.CommentUnitHeader>
+      {!isEdit && (
+        <S.CommentBox
+          key={props.el._id}
+          id={String(props.el.writer)}
+          onClick={props.onClickWriter}
+        >
+          <S.CommentUserIcon>
+            <FontAwesomeIcon icon={faCircleUser} size="2x" />
+          </S.CommentUserIcon>
 
-              <S.CommentContents>{props.el.contents}</S.CommentContents>
+          <S.CommentUnit>
+            <S.CommentUnitHeader>
+              <S.UserName>{props.el.writer}</S.UserName>
+              <S.UserStar value={props.el?.rating} disabled></S.UserStar>
+            </S.CommentUnitHeader>
 
-              <S.CommentDate>{getDate(props.el.createdAt)}</S.CommentDate>
-            </S.CommentUnit>
+            <S.CommentContents>{props.el.contents}</S.CommentContents>
 
-            <S.CommentSetting>
-              <S.CommentChange>
-                <EditOutlined onClick={props.onClickEdit} />
-              </S.CommentChange>
-              <S.CommentDelete>
-                <CloseOutlined
-                  id={props.el._id}
-                  onClick={props.onClickOpenDeleteModal}
-                />
-              </S.CommentDelete>
-            </S.CommentSetting>
-          </S.CommentBox>
-        )}
-        {/* ))} */}
-        {props.isEdit === true && <input type="text"></input>}
-      </InfiniteScroll>
+            <S.CommentDate>{getDate(props.el.createdAt)}</S.CommentDate>
+          </S.CommentUnit>
+
+          <S.CommentSetting>
+            <S.CommentChange>
+              <EditOutlined id={props.el._id} onClick={onClickMoveToUpdate} />
+            </S.CommentChange>
+            <S.CommentDelete>
+              <CloseOutlined
+                id={props.el._id}
+                onClick={onClickOpenDeleteModal}
+              />
+            </S.CommentDelete>
+          </S.CommentSetting>
+        </S.CommentBox>
+      )}
+      {isEdit === true && (
+        <BoardCommentWrite isEdit={true} setIsEdit={setIsEdit} el={props.el} />
+      )}
     </div>
   );
 }

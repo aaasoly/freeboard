@@ -8,9 +8,9 @@ import {
 import BoardCommentListUI from "./CommentList.presenter";
 import {
   FETCH_BOARD_COMMENTS,
-  DELETE_BOARD_COMMENT,
+  // DELETE_BOARD_COMMENT,
 } from "./CommentList.queries";
-import { Modal } from "antd";
+// import { Modal } from "antd";
 
 export default function BoardCommentList() {
   // FETCH_COMMENTS Comments list
@@ -48,68 +48,59 @@ export default function BoardCommentList() {
     });
   };
 
-  // update comment
-  const [isEdit, setIsEdit] = useState(false);
-
-  const onClickEdit = (event) => {
-    setIsEdit(true);
-  };
-
   // DELETE_COMMENTS
-  const [deleteId, setDeleteId] = useState("");
-  const [commentpassword, setCommentpassword] = useState("");
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [deleteBoardComment] = useMutation(DELETE_BOARD_COMMENT);
+  // const [deleteId, setDeleteId] = useState("");
+  // const [commentpassword, setCommentpassword] = useState("");
+  // const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  // const [deleteBoardComment] = useMutation(DELETE_BOARD_COMMENT);
 
-  const onClickDeleteComment = async () => {
-    try {
-      await deleteBoardComment({
-        variables: {
-          password: commentpassword,
-          boardCommentId: deleteId,
-        },
-        refetchQueries: [
-          {
-            query: FETCH_BOARD_COMMENTS,
-            variables: { boardId: router.query.boardId },
-          },
-        ],
-      });
-      setIsOpenDeleteModal(false);
-      setDeleteId("");
-      Modal.success({
-        content: "댓글이 삭제되었습니다!",
-      });
-    } catch (error) {
-      Modal.error({ content: error.message });
-    }
-  };
+  // const onClickDeleteComment = async () => {
+  //   try {
+  //     await deleteBoardComment({
+  //       variables: {
+  //         password: commentpassword,
+  //         boardCommentId: deleteId,
+  //       },
+  //       refetchQueries: [
+  //         {
+  //           query: FETCH_BOARD_COMMENTS,
+  //           variables: { boardId: router.query.boardId },
+  //         },
+  //       ],
+  //     });
+  //     setIsOpenDeleteModal(false);
+  //     setDeleteId("");
+  //     Modal.success({
+  //       content: "댓글이 삭제되었습니다!",
+  //     });
+  //   } catch (error) {
+  //     Modal.error({ content: error.message });
+  //   }
+  // };
 
-  function onClickOpenDeleteModal(event: MouseEvent<HTMLDivElement>) {
-    setIsOpenDeleteModal(true);
-    if (event.target instanceof Element) setDeleteId(event.currentTarget.id);
-  }
+  // function onClickOpenDeleteModal(event: MouseEvent<HTMLDivElement>) {
+  //   setIsOpenDeleteModal(true);
+  //   if (event.target instanceof Element) setDeleteId(event.currentTarget.id);
+  // }
 
-  function onClickCloseDeleteModal(event: MouseEvent<HTMLDivElement>) {
-    setIsOpenDeleteModal(false);
-  }
+  // function onClickCloseDeleteModal(event: MouseEvent<HTMLDivElement>) {
+  //   setIsOpenDeleteModal(false);
+  // }
 
-  function onChangeDeletePassword(event: ChangeEvent<HTMLInputElement>) {
-    setCommentpassword(event.target.value);
-  }
+  // function onChangeDeletePassword(event: ChangeEvent<HTMLInputElement>) {
+  //   setCommentpassword(event.target.value);
+  // }
 
   return (
     <BoardCommentListUI
       data={data}
       onClickWriter={onClickWriter}
-      onClickDeleteComment={onClickDeleteComment}
-      onChangeDeletePassword={onChangeDeletePassword}
-      isOpenDeleteModal={isOpenDeleteModal}
-      onClickOpenDeleteModal={onClickOpenDeleteModal}
-      onClickCloseDeleteModal={onClickCloseDeleteModal}
+      // onClickDeleteComment={onClickDeleteComment}
+      // onChangeDeletePassword={onChangeDeletePassword}
+      // isOpenDeleteModal={isOpenDeleteModal}
+      // onClickOpenDeleteModal={onClickOpenDeleteModal}
+      // onClickCloseDeleteModal={onClickCloseDeleteModal}
       onLoadMore={onLoadMore}
-      isEdit={isEdit}
-      onClickEdit={onClickEdit}
     />
   );
 }

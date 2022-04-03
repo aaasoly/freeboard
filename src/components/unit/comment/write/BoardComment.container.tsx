@@ -2,14 +2,17 @@ import { useMutation } from "@apollo/client";
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import BoardCommentWriteUI from "./BoardComment.presenter";
-import { CREATE_BOARD_COMMENT } from "./BoardComment.queries";
+import {
+  CREATE_BOARD_COMMENT,
+  UPDATE_BOARD_COMMENT,
+} from "./BoardComment.queries";
 import { FETCH_BOARD_COMMENTS } from "../list/CommentList.queries";
 import {
   IMutation,
   IMutationCreateBoardCommentArgs,
 } from "../../../../commons/types/generated/types";
 
-export default function BoardCommentWrite() {
+export default function BoardCommentWrite(props) {
   const router = useRouter();
 
   const [writer, setWriter] = useState("");
@@ -69,6 +72,47 @@ export default function BoardCommentWrite() {
     }
   };
 
+  // update comment
+  // const [isEdit, setIsEdit] = useState(false);
+  const [updateBoardComment] = useMutation(UPDATE_BOARD_COMMENT);
+
+  // const onClickMoveToUpdate = () => {
+  //   props.setIsEdit(true);
+  //   console.log("true");
+  // };
+
+  const onClickUpdate = async (event) => {
+    console.log("111");
+    if (!contents) {
+      alert("내용이 수정되지 않았었니다");
+      return;
+    }
+    if (!password) {
+      alert("비밀번호가 입력되지 않았습니다.");
+      return;
+    }
+
+    try {
+      if (!props.el?._id) return;
+      await updateBoardComment({
+        variables: {
+          updateBoardCommentInput: { contents: contents },
+          password: password,
+          boardCommentId: props.el?._id,
+        },
+        refetchQueries: [
+          {
+            query: FETCH_BOARD_COMMENTS,
+            variables: { boardId: router.query.boardId },
+          },
+        ],
+      });
+      props.setIsEdit?.(false);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <div>
       <BoardCommentWriteUI
@@ -82,6 +126,10 @@ export default function BoardCommentWrite() {
         contents={contents}
         writer={writer}
         password={password}
+        onClickUpdate={onClickUpdate}
+        el={props.el}
+        isEdit={props.isEdit}
+        // onClickMoveToUpdate={onClickMoveToUpdate}
       />
     </div>
   );
