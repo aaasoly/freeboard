@@ -31,6 +31,7 @@ export default function BoardDetailUI(props: IMyPropsBoardDetailUI) {
             <S.LocaDetail>
               <S.Address>
                 {props.data?.fetchBoard?.boardAddress?.address}
+                <br />
                 {props.data?.fetchBoard?.boardAddress?.addressDetail}
               </S.Address>
               <S.Triangle></S.Triangle>

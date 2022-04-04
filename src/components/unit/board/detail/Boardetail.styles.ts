@@ -10,7 +10,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: auto;
+  margin-top: 40px;
   margin-bottom: 40px;
 `;
 
@@ -91,18 +92,19 @@ export const LocaDetail = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-right: 16px;
+  margin-right: 10px;
   margin-bottom: 4px;
-  box-sizing: border-box;
 `;
 export const Address = styled.div`
-  width: 376px;
+  /* width: 376px; */
   height: 64px;
   color: #fff;
   background-color: #c4c4c4;
   text-align: right;
   padding: 10px 16px;
-  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export const Triangle = styled.div`
   width: 0px;
@@ -111,14 +113,13 @@ export const Triangle = styled.div`
   border-left: 0px solid transparent;
   border-right: 12px solid transparent;
   transform: rotate(180deg);
-  box-sizing: border-box;
 `;
 
 export const LinkIcon = styled.div`
-  color: #ffd600;
+  color: thistle;
 `;
 export const LocaIcon = styled.div`
-  color: #ffd600;
+  color: thistle;
 `;
 
 // 본문
@@ -133,9 +134,9 @@ export const PostBody = styled.div`
 `;
 
 export const PostTitle = styled.div`
-  width: 285px;
+  /* width: 285px; */
   height: 54px;
-  font-size: 36px;
+  font-size: 26px;
   margin-bottom: 40px;
 `;
 
@@ -146,7 +147,7 @@ export const PostPicture = styled.img`
 `;
 export const PostText = styled.div`
   width: 100%;
-  /* height: 96px; */
+  font-size: 16px;
   margin-bottom: 120px;
 `;
 export const Youtube = styled(ReactPlayer)`
@@ -160,7 +161,7 @@ export const LikeIcons = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto 60px;
+  margin: 50px auto 60px;
 `;
 
 export const Like = styled.div`
@@ -171,11 +172,11 @@ export const Like = styled.div`
 `;
 export const Likebutton = styled(LikeOutlined)`
   font-size: 20px;
-  color: #ffd600;
+  color: thistle;
   cursor: pointer;
 `;
 export const LikeNum = styled.div`
-  color: #ffd600;
+  color: thistle;
   font-size: 18px;
   padding-top: 10px;
 `;
@@ -213,4 +214,8 @@ export const Btn = styled.button`
   background-color: #fff;
   padding: 11px 60px;
   cursor: pointer;
+  &:hover {
+    background-color: thistle;
+    color: #fff;
+  }
 `;

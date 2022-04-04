@@ -48,6 +48,9 @@ export const ColumnNumber = styled.div`
   height: 52px;
   padding: 14px 0;
   text-align: center;
+  &:hover {
+    color: thistle;
+  }
 `;
 
 export const ColumnTitle = styled.div`
@@ -56,6 +59,12 @@ export const ColumnTitle = styled.div`
   padding: 14px 0;
   text-align: center;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+    color: thistle;
+  }
 `;
 
 export const ColumnWriter = styled.div`
@@ -63,6 +72,9 @@ export const ColumnWriter = styled.div`
   height: 52px;
   padding: 14px 0;
   text-align: center;
+  &:hover {
+    color: thistle;
+  }
 `;
 
 export const ColumnDate = styled.div`

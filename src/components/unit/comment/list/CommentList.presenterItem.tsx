@@ -7,6 +7,7 @@ import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import BoardCommentWrite from "../write/BoardComment.container";
 import { useState } from "react";
+import { FETCH_BOARD_COMMENTS } from "./CommentList.queries";
 import { DELETE_BOARD_COMMENT } from "./CommentList.queries";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
@@ -59,7 +60,6 @@ export default function BoardCommentListUIItem(props) {
 
   const onClickMoveToUpdate = () => {
     setIsEdit(true);
-    console.log("true");
   };
 
   return (
@@ -70,12 +70,12 @@ export default function BoardCommentListUIItem(props) {
           onOk={onClickDeleteComment}
           onCancel={onClickCloseDeleteModal}
         >
-          <div>비밀번호 입력: </div>
+          <div>비밀번호를 입력하세요.</div>
           <S.PasswordInput type="password" onChange={onChangeDeletePassword} />
         </Modal>
       )}
 
-      {!isEdit && (
+      {!isEdit && ( // isEdit 가 아닐 때 (삼항연산자는 길어질 때 잘 쓰지 않는다)
         <S.CommentBox
           key={props.el._id}
           id={String(props.el.writer)}

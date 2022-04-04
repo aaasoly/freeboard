@@ -22,7 +22,7 @@ const ImgBox = styled.div`
 `;
 
 const BannerImg = styled.img`
-  height: 300px;
+  width: 500px;
   margin: 0 auto;
 `;
 

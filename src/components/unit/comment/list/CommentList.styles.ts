@@ -51,20 +51,20 @@ export const CommentUnit = styled.div`
 `;
 
 export const CommentUnitHeader = styled.div`
-  width: 179px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: space-between; */
+  align-items: flex-start;
 `;
 
 export const UserName = styled.div`
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 `;
 export const UserStar = styled(Rate)`
-  font-size: 18px;
+  font-size: 16px;
 `;
 export const CommentContents = styled.div`
   /* width: 1080px; */
@@ -81,6 +81,7 @@ export const CommentDate = styled.div`
 `;
 
 export const PasswordInput = styled.input`
-  width: 50px;
-  height: 20px;
+  width: 60%;
+  height: 30px;
+  margin-top: 10px;
 `;

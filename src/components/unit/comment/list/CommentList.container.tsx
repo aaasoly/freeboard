@@ -1,16 +1,13 @@
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { MouseEvent } from "react";
 import {
   IQueryFetchBoardArgs,
   IQuery,
 } from "../../../../commons/types/generated/types";
 import BoardCommentListUI from "./CommentList.presenter";
-import {
-  FETCH_BOARD_COMMENTS,
-  // DELETE_BOARD_COMMENT,
-} from "./CommentList.queries";
-// import { Modal } from "antd";
+import { FETCH_BOARD_COMMENTS } from "./CommentList.queries";
+import { Modal } from "antd";
 
 export default function BoardCommentList() {
   // FETCH_COMMENTS Comments list
@@ -23,7 +20,9 @@ export default function BoardCommentList() {
   });
 
   const onClickWriter = (event: MouseEvent<HTMLDivElement>) => {
-    alert(event.currentTarget.id + "님이 작성한 글입니다");
+    Modal.success({
+      content: event.currentTarget.id + "님이 작성한 글입니다.",
+    });
     // 이벤트가 있는 태그에 id값을 설정
     // 어떤 자식 태그를 클릭하더라도 상위에 있는 onClick 이벤트 실행
   };
@@ -36,7 +35,8 @@ export default function BoardCommentList() {
       variables: { page: Math.ceil(data.fetchBoardComments.length / 10) + 1 },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.fetchBoardComments)
-          return { fetchBoardComments: [...prev.fetchBoardComments] };
+          // 더 받아올 데이터가 없을 때
+          return { fetchBoardComments: [...prev.fetchBoardComments] }; // 이전 prev 에 저장된 데이터 불러옴
 
         return {
           fetchBoardComments: [
@@ -48,58 +48,10 @@ export default function BoardCommentList() {
     });
   };
 
-  // DELETE_COMMENTS
-  // const [deleteId, setDeleteId] = useState("");
-  // const [commentpassword, setCommentpassword] = useState("");
-  // const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  // const [deleteBoardComment] = useMutation(DELETE_BOARD_COMMENT);
-
-  // const onClickDeleteComment = async () => {
-  //   try {
-  //     await deleteBoardComment({
-  //       variables: {
-  //         password: commentpassword,
-  //         boardCommentId: deleteId,
-  //       },
-  //       refetchQueries: [
-  //         {
-  //           query: FETCH_BOARD_COMMENTS,
-  //           variables: { boardId: router.query.boardId },
-  //         },
-  //       ],
-  //     });
-  //     setIsOpenDeleteModal(false);
-  //     setDeleteId("");
-  //     Modal.success({
-  //       content: "댓글이 삭제되었습니다!",
-  //     });
-  //   } catch (error) {
-  //     Modal.error({ content: error.message });
-  //   }
-  // };
-
-  // function onClickOpenDeleteModal(event: MouseEvent<HTMLDivElement>) {
-  //   setIsOpenDeleteModal(true);
-  //   if (event.target instanceof Element) setDeleteId(event.currentTarget.id);
-  // }
-
-  // function onClickCloseDeleteModal(event: MouseEvent<HTMLDivElement>) {
-  //   setIsOpenDeleteModal(false);
-  // }
-
-  // function onChangeDeletePassword(event: ChangeEvent<HTMLInputElement>) {
-  //   setCommentpassword(event.target.value);
-  // }
-
   return (
     <BoardCommentListUI
       data={data}
       onClickWriter={onClickWriter}
-      // onClickDeleteComment={onClickDeleteComment}
-      // onChangeDeletePassword={onChangeDeletePassword}
-      // isOpenDeleteModal={isOpenDeleteModal}
-      // onClickOpenDeleteModal={onClickOpenDeleteModal}
-      // onClickCloseDeleteModal={onClickCloseDeleteModal}
       onLoadMore={onLoadMore}
     />
   );

@@ -24,7 +24,7 @@ export const UPDATE_BOARD_COMMENT = gql`
     $boardCommentId: ID!
   ) {
     updateBoardComment(
-      UpdateBoardCommentInput: $updateBoardCommentInput
+      updateBoardCommentInput: $updateBoardCommentInput
       password: $password
       boardCommentId: $boardCommentId
     ) {
@@ -32,6 +32,7 @@ export const UPDATE_BOARD_COMMENT = gql`
       writer
       contents
       rating
+      createdAt
     }
   }
 `;

@@ -11,6 +11,7 @@ import {
   IMutation,
   IMutationCreateBoardCommentArgs,
 } from "../../../../commons/types/generated/types";
+import { Modal } from "antd";
 
 export default function BoardCommentWrite(props) {
   const router = useRouter();
@@ -61,46 +62,45 @@ export default function BoardCommentWrite(props) {
           },
         ],
       });
-      alert("댓글이 등록되었습니다.");
+      Modal.success({ content: "댓글이 등록되었습니다." });
       // router.push(`${router.query.boardId}`);
       setWriter("");
       setPassword("");
       setContents("");
       // state 이용해서 입력버튼 클릭 후 input 창 비워주기(state가 input창에 바인딩 된 상태)
     } catch (error) {
-      alert(error.message);
+      Modal.error({ content: error.message });
     }
   };
 
   // update comment
-  // const [isEdit, setIsEdit] = useState(false);
   const [updateBoardComment] = useMutation(UPDATE_BOARD_COMMENT);
 
-  // const onClickMoveToUpdate = () => {
-  //   props.setIsEdit(true);
-  //   console.log("true");
-  // };
-
-  const onClickUpdate = async (event) => {
-    console.log("111");
+  const onClickUpdate = async () => {
     if (!contents) {
-      alert("내용이 수정되지 않았었니다");
+      Modal.error({ content: "내용이 수정되지 않았습니다" });
       return;
     }
     if (!password) {
-      alert("비밀번호가 입력되지 않았습니다.");
+      Modal.error({ content: "비밀번호가 입력되지 않았습니다." });
       return;
     }
 
     try {
-      if (!props.el?._id) return;
+      if (!props.el?._id) return; // _id가 없으면 실행하지 않음
+
+      const updateBoardCommentInput = {};
+      if (star !== props.el?.rating) updateBoardCommentInput.rating = star; // 바뀌어야 수정
+      if (contents !== "") updateBoardCommentInput.contents = contents;
+
       await updateBoardComment({
         variables: {
-          updateBoardCommentInput: { contents: contents },
+          updateBoardCommentInput,
           password: password,
           boardCommentId: props.el?._id,
         },
         refetchQueries: [
+          // 수정 완료후 refetch
           {
             query: FETCH_BOARD_COMMENTS,
             variables: { boardId: router.query.boardId },
@@ -109,7 +109,7 @@ export default function BoardCommentWrite(props) {
       });
       props.setIsEdit?.(false);
     } catch (error) {
-      alert(error.message);
+      Modal.error({ content: error.message });
     }
   };
 
@@ -120,7 +120,6 @@ export default function BoardCommentWrite(props) {
         onChangeWriter={onChangeWriter}
         onChangePassword={onChangePassword}
         onChangeContents={onChangeContents}
-        // onChangeRating={onChangeRating}
         onChangeStar={onChangeStar}
         // state를 props로 넘겨주기 > 제어 컴포넌트 만들기
         contents={contents}
@@ -129,7 +128,6 @@ export default function BoardCommentWrite(props) {
         onClickUpdate={onClickUpdate}
         el={props.el}
         isEdit={props.isEdit}
-        // onClickMoveToUpdate={onClickMoveToUpdate}
       />
     </div>
   );
